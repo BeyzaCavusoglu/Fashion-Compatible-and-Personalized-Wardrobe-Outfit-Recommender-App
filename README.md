@@ -55,3 +55,8 @@ Calendar page:
 
 
 
+
+
+The biggest challenge was integrating Flask backend and trying to do the image processing on a web browser from a python code. It took a huge amount of time for me to figure out. I have learned a lot about web development, image processing, object detection, using flask etc.
+
+My suggestions to contributors is keeping developing the model, adding more datasets and training on them. Also, the UI can be improved to be more aesthetic, more features like chatbox etc can be added to improve the app.
