@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calendar</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <style>
+        /* CSS styles for the calendar */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            background-color: #f2f2f2;
+        }
+
+        nav li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        nav a {
+            display: block;
+            padding: 10px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .dropzone {
+            border: 2px dashed #e84c3d;
+            padding: 50px;
+            text-align: center;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .calendar-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .dropdown-container {
+            margin-bottom: 20px;
+        }
+
+        .dropdown-container select {
+            font-size: 16px;
+            padding: 5px;
+            width: 100%;
+        }
+
+        .dropzone.selected {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Modisto</h1>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="cloth_recognition.html">Upload Clothes</a></li>
+        <li><a href="closet.html">Closet</a></li>
+        <li><a href="my_outfits.html">My Outfits</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+    </ul>
+</nav>
+
+<div class="calendar-container">
+    <div class="dropdown-container">
+        <select id="image-select">
+            <option value="">Select an image</option>
+            <option value="templates/uploads/bb.jpg">bb.jpg</option>
+            <option value="templates/uploads/test5.jpg">test5.jpg</option>
+            <option value="templates/uploads/test6.jpg">test6.jpg</option>
+        </select>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th colspan="7">May 2023</th>
+        </tr>
+        <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><div class="dropzone" id="day1">1</div></td>
+            <td><div class="dropzone" id="day2">2</div></td>
+            <td><div class="dropzone" id="day3">3</div></td>
+        </tr>
+        <tr>
+            <td><div class="dropzone" id="day4">4</div></td>
+            <td><div class="dropzone" id="day5">5</div></td>
+            <td><div class="dropzone" id="day6">6</div></td>
+            <td><div class="dropzone" id="day7">7</div></td>
+            <td><div class="dropzone" id="day8">8</div></td>
+            <td><div class="dropzone" id="day9">9</div></td>
+            <td><div class="dropzone" id="day10">10</div></td>
+        </tr>
+        <tr>
+            <td><div class="dropzone" id="day11">11</div></td>
+            <td><div class="dropzone" id="day12">12</div></td>
+            <td><div class="dropzone" id="day13">13</div></td>
+            <td><div class="dropzone" id="day14">14</div></td>
+            <td><div class="dropzone" id="day15">15</div></td>
+            <td><div class="dropzone" id="day16">16</div></td>
+            <td><div class="dropzone" id="day17">17</div></td>
+        </tr>
+        <tr>
+            <td><div class="dropzone" id="day18">18</div></td>
+            <td><div class="dropzone" id="day19">19</div></td>
+            <td><div class="dropzone" id="day20">20</div></td>
+            <td><div class="dropzone" id="day21">21</div></td>
+            <td><div class="dropzone" id="day22">22</div></td>
+            <td><div class="dropzone" id="day23">23</div></td>
+            <td><div class="dropzone" id="day24">24</div></td>
+        </tr>
+        <tr>
+            <td><div class="dropzone" id="day25">25</div></td>
+            <td><div class="dropzone" id="day26">26</div></td>
+            <td><div class="dropzone" id="day27">27</div></td>
+            <td><div class="dropzone" id="day28">28</div></td>
+            <td><div class="dropzone" id="day29">29</div></td>
+            <td><div class="dropzone" id="day30">30</div></td>
+            <td><div class="dropzone" id="day31">31</div></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="menu-container"></div>
+
+<script>
+    $(function() {
+        $("#image-select").on("change", function() {
+            var selectedImage = $(this).val();
+            if (selectedImage) {
+                var selectedDay = $(".dropzone.selected").attr("id");
+                var date = selectedDay.replace("day", "");
+                var imageHtml = '<img src="' + selectedImage + '" alt="Selected Image" width="100px">';
+                $("#" + selectedDay).html(imageHtml);
+                alert("Image uploaded to day " + date + " successfully!");
+            }
+        });
+
+        $(".dropzone").on("click", function() {
+            $(".dropzone").removeClass("selected");
+            $(this).addClass("selected");
+        });
+
+        $("#menu-container").load("menu.html");
+    });
+</script>
+</body>
+</html>

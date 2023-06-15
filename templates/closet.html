@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Closet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+        }
+
+        .image-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .like-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .like-button:focus {
+            outline: none;
+        }
+
+        .like-button .heart-icon {
+            fill: blue;
+            width: 24px;
+            height: 24px;
+            transition: fill 0.3s;
+        }
+
+        .like-button.pressed .heart-icon {
+            fill: pink;
+        }
+
+        .filter-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .filter-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: #000;
+            font-size: 16px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .filter-button.active {
+            font-weight: bold;
+            background-color: #e6e6e6;
+        }
+
+        .dropdown {
+            display: inline-block;
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: #000;
+            font-size: 16px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-toggle.active {
+            font-weight: bold;
+            background-color: #e6e6e6;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1;
+            display: none;
+            min-width: 100%;
+            padding: 5px 0;
+            margin: 2px 0 0;
+            font-size: 16px;
+            color: #000;
+            text-align: left;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: normal;
+            line-height: 1.5;
+            color: #000;
+            white-space: nowrap;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Clothes</h1>
+    <div class="filter-buttons">
+        <button class="filter-button active" data-filter="all" onclick="filterImages('all')">All</button>
+        <button class="filter-button" data-filter="liked" onclick="filterImages('liked')">Liked</button>
+        <div class="dropdown">
+            <button class="dropdown-toggle" onclick="toggleDropdown(this)">
+                Type
+            </button>
+            <div class="dropdown-menu" id="typeDropdown">
+                <a class="dropdown-item" onclick="filterImagesByType(null)">All</a>
+                <a class="dropdown-item" onclick="filterImagesByType('short_sleeve_top')">Short Sleeve Top</a>
+                <a class="dropdown-item" onclick="filterImagesByType('long_sleeve_top')">Long Sleeve Top</a>
+                <a class="dropdown-item" onclick="filterImagesByType('short_sleeve_outwear')">Short Sleeve Outwear</a>
+                <a class="dropdown-item" onclick="filterImagesByType('long_sleeve_outwear')">Long Sleeve Outwear</a>
+                <a class="dropdown-item" onclick="filterImagesByType('vest')">Vest</a>
+                <a class="dropdown-item" onclick="filterImagesByType('sling')">Sling</a>
+                <a class="dropdown-item" onclick="filterImagesByType('shorts')">Shorts</a>
+                <a class="dropdown-item" onclick="filterImagesByType('trousers')">Trousers</a>
+                <a class="dropdown-item" onclick="filterImagesByType('skirt')">Skirt</a>
+                <a class="dropdown-item" onclick="filterImagesByType('short_sleeve_dress')">Short Sleeve Dress</a>
+                <a class="dropdown-item" onclick="filterImagesByType('long_sleeve_dress')">Long Sleeve Dress</a>
+                <a class="dropdown-item" onclick="filterImagesByType('vest_dress')">Vest Dress</a>
+                <a class="dropdown-item" onclick="filterImagesByType('sling_dress')">Sling Dress</a>
+            </div>
+        </div>
+<!--        {% for word in words_list %}-->
+<!--            <button class="filter-button" onclick="filterImagesByWord('{{ word }}')">{{ word }}</button>-->
+<!--        {% endfor %}-->
+    </div>
+    <div class="image-grid">
+        {% for filename in image_files %}
+             {% if not (filename.endswith('_clothes_detected.jpg') or filename.endswith('_list_obj.txt')) %}
+                <div class="image-item">
+                    <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded Image">
+                    <button class="like-button" onclick="addToLiked(this, '{{ filename }}')">
+                        <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 4.5C9.21 1.83 4 4.67 4 9c0 3.07 2.92 5.83 8 10 5.08-4.17 8-6.93 8-10 0-4.33-5.21-7.17-8-4.5z"/>
+                        </svg>
+                    </button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+
+    <button onclick="goToHome()">Go Back to Home</button>
+
+<script>
+    function goToHome() {
+        window.location.href = "/";
+    }
+
+        function addToLiked(button, filename) {
+            button.classList.toggle('pressed');
+            fetch('/like_clothes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ filename: filename }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Added to liked clothes!');
+                } else {
+                    alert('Failed to add to liked clothes.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function filterImages(filter) {
+            const imageItems = document.querySelectorAll('.image-item');
+            const filterButtons = document.querySelectorAll('.filter-button');
+
+            imageItems.forEach(item => {
+                if (filter === 'all' || (filter === 'liked' && item.querySelector('.like-button').classList.contains('pressed'))) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            filterButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.filter === filter) {
+                    button.classList.add('active');
+                }
+            });
+        }
+
+        function filterImagesByWord(word) {
+            const imageItems = document.querySelectorAll('.image-item');
+            const filterButtons = document.querySelectorAll('.filter-button');
+
+            imageItems.forEach(item => {
+                if (item.innerText.includes(word)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            filterButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.innerText === word) {
+                    button.classList.add('active');
+                }
+            });
+        }
+
+        function filterImagesByType(type) {
+            const imageItems = document.querySelectorAll('.image-item');
+            const filterButtons = document.querySelectorAll('.dropdown-item');
+
+            imageItems.forEach(item => {
+                if (type === null || item.dataset.type === type) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            filterButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.type === type) {
+                    button.classList.add('active');
+                }
+            });
+        }
+
+        function toggleDropdown(button) {
+            const dropdown = button.nextElementSibling;
+            dropdown.classList.toggle('show');
+        }
+
+        // Call the filterImagesByWord function with the selected word from the list
+        const word = '{{ words_list[0] }}'; // Assuming you want to filter based on the first word in the list
+        filterImagesByWord(word);
+    </script>
+</body>
+</html>

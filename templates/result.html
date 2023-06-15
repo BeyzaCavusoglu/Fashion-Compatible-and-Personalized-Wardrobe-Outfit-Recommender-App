@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        img {
+            max-width: 25%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Processing Result</h1>
+    <h2>Uploaded Image:</h2>
+    <img src="{{ url_for('uploaded_file', filename=image_path) }}" alt="Uploaded Image">
+
+    <h2>Cloth Detection and Crop:</h2>
+    <img src="{{ url_for('uploaded_file', filename=result_image_path) }}" alt="Detected Image">
+
+
+    <h3>List of Words:</h3>
+    <ul>
+      {% for word in words_list %}
+        <li>{{ word }}</li>
+      {% endfor %}
+    </ul>
+
+
+    <button onclick="goBack()">Go Back to Home Page</button>
+    <button onclick="uploadAnother()">Upload Another Picture</button>
+
+    <script>
+        function goBack() {
+            window.location.href = "{{ url_for('home') }}";
+        }
+
+        function uploadAnother() {
+            window.location.href = "{{ url_for('cloth_recognition') }}";
+        }
+    </script>
+</body>
+</html>
