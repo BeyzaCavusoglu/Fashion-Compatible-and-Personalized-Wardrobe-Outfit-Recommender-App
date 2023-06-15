@@ -24,16 +24,30 @@ Login page:
 
 Users can only sign in with saved username/passwords, so there is active password checking. (use admin and password for a free pass! :) )
 
+
+
 Home page:
 ![image](https://github.com/BeyzaCavusoglu/Fashion-Compatible-and-Personalized-Wardrobe-Outfit-Recommender-Modisto/assets/45294641/8c1990a5-abe9-4fec-a6cc-2e719499630f)
+
+
+
 
 Upload image page:
 ![image](https://github.com/BeyzaCavusoglu/Fashion-Compatible-and-Personalized-Wardrobe-Outfit-Recommender-Modisto/assets/45294641/a7b55d1e-e77d-4a66-a5f4-714f375dfe7a)
 
+
+
+
 The result of cloth detection:
 ![image](https://github.com/BeyzaCavusoglu/Fashion-Compatible-and-Personalized-Wardrobe-Outfit-Recommender-Modisto/assets/45294641/7536e1af-9276-4ecc-b8b1-b3f6a1b38839)
 
+
+
+
 As it can be seen, we can detect the category of clothe and get the type as string to print. We will use this to filter the closet with clothing types.
+
+
+
 
 Calendar page:
 ![image](https://github.com/BeyzaCavusoglu/Fashion-Compatible-and-Personalized-Wardrobe-Outfit-Recommender-Modisto/assets/45294641/3d8a17ff-9bf9-41c8-89e6-e5167ccfcf7b)
